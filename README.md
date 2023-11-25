@@ -23,5 +23,5 @@ Python 3 должен быть уже установлен, с помощью pi
     python clickcounter.py
 
 ### Пример вывода программы
-![img](https://github.com/MilanOfc/ClickCounter/assets/122183166/b86bdb8a-1876-46a1-ae08-99e59fb3e033)
+![Пример вывода](https://github.com/MilanOfc/ClickCounter/assets/122183166/b86bdb8a-1876-46a1-ae08-99e59fb3e033)
 
