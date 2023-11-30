@@ -1,14 +1,14 @@
+import sys
+
 import requests
 import os
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 from dotenv import load_dotenv
 
-
-def remove_https(url: str):
-    return url.replace('http://', '').replace('https://', '')
+bitly_url_template = 'https://api-ssl.bitly.com/v4/'
 
 
-def shorten_link(url):
+def shorten_link(url, token):
     """
     return shortened link of url
     :param token: str
@@ -16,6 +16,7 @@ def shorten_link(url):
     :return: short_link: str
     """
     payload = {'long_url': url}
+    headers = {'Authorization': 'Bearer ' + token}
     bitly_url = urljoin(bitly_url_template, 'shorten')
     response = requests.post(bitly_url, headers=headers, json=payload)
     response.raise_for_status()
@@ -23,15 +24,16 @@ def shorten_link(url):
     return bitlink
 
 
-def count_clicks(bitlink):
+def count_clicks(bitlink, token):
     """
     return number of clicks on given url
     :param token: str
     :param url: str
     :return: clicks_amount: int
     """
-    bitlink = remove_https(bitlink)
+    bitlink = urlparse(bitlink).netloc + urlparse(bitlink).path
     params = {'unit': 'month', 'units': -1}
+    headers = {'Authorization': 'Bearer ' + token}
     bitly_url = urljoin(bitly_url_template, f'bitlinks/{bitlink}/clicks/summary')
     response = requests.get(bitly_url, headers=headers, params=params)
     response.raise_for_status()
@@ -39,44 +41,30 @@ def count_clicks(bitlink):
     return clicks_amount
 
 
-def is_bitlink(url):
+def is_bitlink(url, token):
     """
     Check is this url bitlink or not
     :param token: str
     :param url: str
     :return: bool
     """
-    url = remove_https(url)
+    url = urlparse(url).netloc + urlparse(url).path
+    headers = {'Authorization': 'Bearer ' + token}
     bitly_url = urljoin(bitly_url_template, f'bitlinks/{url}')
     response = requests.get(bitly_url, headers=headers)
-    try:
-        response.raise_for_status()
-        return True
-    except requests.exceptions.HTTPError:
-        return False
-
-
-def catch_exceptions(url, func):
-    try:
-        func(url)
-        return False
-    except requests.exceptions.HTTPError:
-        return True
+    return response.ok
 
 
 if __name__ == '__main__':
     load_dotenv()
-    token = os.environ['token']
-    headers = {'Authorization': token}
+    bitly_token = os.environ['BITLY_TOKEN']
     url = input('Please enter the link: ')
-    bitly_url_template = 'https://api-ssl.bitly.com/v4/'
-    if is_bitlink(url):
-        if catch_exceptions(url, count_clicks):
+    if is_bitlink(url, bitly_token):
+        print('Total clicks: ', count_clicks(url, bitly_token))
+    else:
+        try:
+            shorten_link(url, bitly_token)
+        except requests.exceptions.HTTPError:
             print('You entered wrong url, please try again')
-            exit()
-        print('Total clicks: ', count_clicks(url))
-        exit()
-    if catch_exceptions(url, shorten_link):
-        print('You entered wrong url, please try again')
-        exit()
-    print('Bitlink: ', shorten_link(url))
+            sys.exit()
+        print('Bitlink: ', shorten_link(url, bitly_token))
