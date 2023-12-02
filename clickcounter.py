@@ -57,7 +57,8 @@ if __name__ == '__main__':
     load_dotenv()
     bitly_token = os.environ['BITLY_TOKEN']
     url = input('Please enter the link: ')
-    bitlink = f'{urlparse(url).netloc}{urlparse(url).path}'
+    parsed_url = urlparse(url)
+    bitlink = f'{parsed_url.netloc}{parsed_url.path}'
     try:
         if is_bitlink(bitlink, bitly_token):
             count_clicks(bitlink, bitly_token)
