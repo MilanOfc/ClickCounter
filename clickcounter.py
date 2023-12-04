@@ -1,5 +1,4 @@
 import sys
-
 import requests
 import os
 from urllib.parse import urljoin, urlparse
@@ -56,7 +55,10 @@ def is_bitlink(url, token):
 if __name__ == '__main__':
     load_dotenv()
     bitly_token = os.environ['BITLY_TOKEN']
-    url = input('Please enter the link: ')
+    if len (sys.argv) > 1:
+        url = sys.argv[1]
+    else:
+        url = input('Please enter the link: ')
     parsed_url = urlparse(url)
     bitlink = f'{parsed_url.netloc}{parsed_url.path}'
     try:
