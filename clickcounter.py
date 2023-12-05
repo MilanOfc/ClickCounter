@@ -1,6 +1,7 @@
 import sys
 import requests
 import os
+import argparse
 from urllib.parse import urljoin, urlparse
 from dotenv import load_dotenv
 
@@ -55,10 +56,10 @@ def is_bitlink(url, token):
 if __name__ == '__main__':
     load_dotenv()
     bitly_token = os.environ['BITLY_TOKEN']
-    if len (sys.argv) > 1:
-        url = sys.argv[1]
-    else:
-        url = input('Please enter the link: ')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('url', help='Link you want to shorten or bitlink, number of clicks on what you want to know')
+    args = parser.parse_args()
+    url = args.url
     parsed_url = urlparse(url)
     bitlink = f'{parsed_url.netloc}{parsed_url.path}'
     try:

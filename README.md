@@ -13,16 +13,11 @@ Python 3 должен быть уже установлен, с помощью pi
 
     echo BITLY_TOKEN='%Ваш_Токен%' >> .env
 
-
 ### Как получить?
 Зарегистрироваться на [сайте](https://app.bitly.com/bbt2/) и получить [токен](https://app.bitly.com/settings/api/)
 Полная [документация сервиса](https://dev.bitly.com/docs/getting-started/authentication/)
 
 ## Запуск
-
-    python clickcounter.py
-
-или
 
     python clickcounter.py %Ваша_Ссылка%
 
