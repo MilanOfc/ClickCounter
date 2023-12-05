@@ -19,11 +19,6 @@ Python 3 должен быть уже установлен, с помощью pi
 Полная [документация сервиса](https://dev.bitly.com/docs/getting-started/authentication/)
 
 ## Запуск
-
-    python clickcounter.py
-
-или
-
     python clickcounter.py %Ваша_Ссылка%
 
 ### Пример вывода программы
