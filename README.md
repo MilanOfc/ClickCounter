@@ -29,3 +29,4 @@ Python 3 должен быть уже установлен, с помощью pi
 ### Пример вывода программы
 ![Пример вывода](https://github.com/MilanOfc/ClickCounter/assets/122183166/5be3903c-b3b1-4072-a84c-9b747269bd9d)
 
+![img](https://github.com/MilanOfc/ClickCounter/assets/122183166/cfc75cb6-edfb-40bc-8263-a1bcdbce40df)
