@@ -53,13 +53,17 @@ def is_bitlink(url, token):
     return response.ok
 
 
+def argparser(arg, help_message):
+    parser = argparse.ArgumentParser()
+    parser.add_argument(arg, help=help_message)
+    args = parser.parse_args()
+    return args
+
+
 if __name__ == '__main__':
     load_dotenv()
     bitly_token = os.environ['BITLY_TOKEN']
-    parser = argparse.ArgumentParser()
-    parser.add_argument('url', help='Link you want to shorten or bitlink, number of clicks on what you want to know')
-    args = parser.parse_args()
-    url = args.url
+    url = argparser('url', 'Link you want to shorten or bitlink, number of clicks on what you want to know').url
     parsed_url = urlparse(url)
     bitlink = f'{parsed_url.netloc}{parsed_url.path}'
     try:
